@@ -1,21 +1,27 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"github.com/nelsongp/multiCoder/factory"
+	"github.com/nelsongp/multiCoder/facade"
+	"log"
 	"os"
+	"strings"
 )
 
-func main(){
-	var n string
-	fmt.Println("Digite un nombre: ")
-	_, err := fmt.Scan(&n)
+func main() {
+	m := readMessage()
+	f := facade.New()
+	f.Encoders(m)
+}
+
+func readMessage() string {
+	fmt.Print("Digite un Nombre: ")
+	reader := bufio.NewReader(os.Stdin)
+	text, err := reader.ReadString('\n')
 	if err != nil {
-		fmt.Printf("error al leer el nombre: %v", err)
-		os.Exit(1)
+		log.Fatalf("no se pudo leer el mensaje del usuario: #{err}")
 	}
-
-	resp := factory.Factory(n)
-
-	fmt.Println(resp)
+	text = strings.TrimSuffix(text, "\n")
+	return text
 }
